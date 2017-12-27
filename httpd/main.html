@@ -1,0 +1,94 @@
+ <script src="/plugin/aircrack/js/ac.js"></script>
+<style>
+  fieldset {
+    border: 0;
+  }
+  label {
+    display: block; margin: 30px 0 0 0;
+  }
+  .overflow {
+    height: 200px;
+  }
+</style>
+</head>
+  <div id="aireplay">
+    <h3>Aireplay-ng</h3>
+    <fieldset>
+    <label for="aireplay-attacks">Select an attack mode:</label>
+       <select name="aireplay-attacks-select" id="aireplay-attacks-select">
+         <option value="10">Select an option</option>
+         <option value="0">Deauthentication</option>
+         <option value="1">Fake Authentication</option>
+         <option value="3">ARP Replay</option>
+         <option value="4">ChopChop</option>
+         <option value="5">Fragmentation</option>
+         <option value="6">Caffe-Latte</option>
+         <option value="7">CFrag</option>
+         <option value="8">WPA Migration Mode</option>
+         <option value="9">Injection Test</option>
+       </select>
+      <div id="aireplay-deauths">
+      <label for="aireplay-deauths-select">Select deauth frames:</label>
+       <select name="aireplay-deauths-select" id="aireplay-deauths-select">
+         <option value="11">Select an option</option>
+         <option value="0">Denial of Service</option>
+         <option value="1">1</option>
+         <option value="2">2</option>
+         <option value="3">3</option>
+         <option value="4">4</option>
+         <option value="5">5</option>
+         <option value="6">6</option>
+         <option value="7">7</option>
+         <option value="8">8</option>
+         <option value="9">9</option>
+         <option value="10">10</option>
+       </select>
+      </div>
+      <div id="aireplay-fakeauth-delay">
+        <label for="aireplay-fakeauth-select">Select Delay:</label>
+       <select name="aireplay-fakeauth-select" id="aireplay-fakeauth-select">
+         <option value="11">Select an option</option>
+         <option value="1">1</option>
+         <option value="2">2</option>
+         <option value="3">3</option>
+         <option value="4">4</option>
+         <option value="5">5</option>
+         <option value="6">6</option>
+         <option value="7">7</option>
+         <option value="8">8</option>
+         <option value="9">9</option>
+         <option value="10">10</option>
+       </select>
+      </div>
+      <div id="aireplay-bssid">
+      <label for="aireplay-bssid">Select a Network:</label>
+       <select name="aireplay-bssid-select" id="aireplay-bssid-select">
+       </select>
+      </div>
+      <div id="aireplay-client">
+      <label for="aireplay-client">Select a Client:</label>
+       <select name="aireplay-client-select" id="aireplay-client-select">
+       </select>
+      </div>
+      <div id="aireplay-interface">
+      <label for="aireplay-interface">Select an Interface:</label>
+       <select name="aireplay-interface-select" id="aireplay-interface-select">
+         <option>Select an option</option>
+       </select>
+      </div>
+      <div id="aireplay-attack">
+      <button>Attack!</button>
+      </div>
+    </div>
+  <div id="aircrack">
+    <h3>Aircrack-ng</h3>
+    <div id="aircrack-attacks">
+    <label for="aircrack-attacks">Select an attack mode:</label>
+       <select name="aircrack-attacks" id="aircrack-attacks">
+         <option>Auto</option>
+         <option>WEP</option>
+         <option>WPA/WPA2</option>
+       </select>
+    </div>
+    </fieldset>
+    </div>
