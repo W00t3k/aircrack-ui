@@ -55,6 +55,13 @@ function getInterfaces(){
   })
 }
 
+  $('#aireplay-reset').on('click', function(){
+    $('#aireplay-bssid-select').find('option').remove().end();
+    $('#aireplay-client-select').find('option').remove().end();
+    $('#aireplay-interface-select').find('option').remove().end();
+    hideThing()
+  })
+
   $("#aireplay-attacks-select").change(function() {
     hideThing();
     $('#aireplay-interface-select').find('option').remove().end();
@@ -72,6 +79,8 @@ function getInterfaces(){
       $('#aireplay-bssid-select').change(function() {
         var selectedbssid = $(this).val()
         $('#aireplay-client-select').find('option').remove().end();
+        $('#aireplay-interface-select').find('option').remove().end();
+        $('#aireplay-client-select').append('<option value="FF:FF:FF:FF:FF:FF">FF:FF:FF:FF:FF:FF</option>')
         $.getJSON("/devices/by-mac/"+selectedbssid+"/devices.json").done(function(clijson){
           for (var x in clijson){
             netclients = clijson[x]['dot11.device']['dot11.device.associated_client_map']
@@ -82,6 +91,7 @@ function getInterfaces(){
         })
          $('#aireplay-client').show()
          getInterfaces()
+         $('#aireplay-interface-select').append('<option value="choose">Select an interface</option>')
          $('#aireplay-interface').show()
          $('#aireplay-attack').show()
          $('#aireplay').accordion("refresh")
