@@ -39,9 +39,9 @@ class deauth(Resource):
         subprocess.Popen(['notify-send', 'Sending deauth to client: '+client,])
         output = []
         cmd = subprocess.Popen(['sudo', '/usr/local/sbin/aireplay-ng', '-0', deauths, '-a', bssid, '-c', client, interfacename], stdout=subprocess.PIPE)
-        return jsonify("Sending a deauth...")
         for ln in cmd.stdout:
             output.append(ln)
+            subprocess.Popen(['notify-send', ln, '-t', '100'])
             print(ln)
         if len(output) > 1:
             subprocess.Popen(['notify-send', "I guess it sent?"])
@@ -51,7 +51,7 @@ class deauth(Resource):
             return jsonify("Some sort of error ocurred.")
 
 api.add_resource(injectionTest, '/injectiontest/<interfacename>') # Route_1
-api.add_resource(deauth, '/deauth/<deauths>/<bssid>/<client>/<interfacename>/response')
+api.add_resource(deauth, '/deauth/<deauths>/<bssid>/<client>/<interfacename>')
 
 
 if __name__ == '__main__':
