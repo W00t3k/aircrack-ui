@@ -13,14 +13,14 @@ function hideThing() {
 hideThing();
 
 function getNetworks() {
-  $.getJSON("/devices/last-time/1/devices.json").done(function(devjson){
+  $.getJSON("/devices/last-time/-30/devices.json").done(function(devjson){
     for (var x in devjson){
       netkey = devjson[x]['kismet.device.base.key']
       netname = devjson[x]['kismet.device.base.name']
       netbssid = devjson[x]['kismet.device.base.macaddr']
       netchannel = devjson[x]['kismet.device.base.channel']
       netclients = devjson[x]['dot11.device']['dot11.device.associated_client_map']
-      $('#aireplay-bssid-select').append('<option value='+netbssid+' data-channel='+netchannel+'>'+netname+" - "+netbssid+" - Channel: "+netchannel)
+      $('#aireplay-bssid-select').append('<option value='+netbssid+'>'+netname+" - "+netbssid+" - Channel: "+netchannel)
     }
   })
 }
@@ -70,44 +70,31 @@ function getInterfaces(){
         $('#aireplay').accordion("refresh")
       })
       $('#aireplay-bssid-select').change(function() {
+        var selectedbssid = $(this).val()
         $('#aireplay-client-select').find('option').remove().end();
-        var selectedbssid = $(this).val();
-        console.log(selectedbssid)
         $.getJSON("/devices/by-mac/"+selectedbssid+"/devices.json").done(function(clijson){
           for (var x in clijson){
             netclients = clijson[x]['dot11.device']['dot11.device.associated_client_map']
             for (var y in netclients){
-            $('#aireplay-client-select').append('<option id='+y+'>'+y)
+            $('#aireplay-client-select').append('<option value='+y+'>'+y)
             }
           }
         })
          $('#aireplay-client').show()
-         $('#aireplay').accordion("refresh")
-      })
-      $('#aireplay-client-select').change(function(){
-        $('#aireplay-interface-select').find('option').remove().end();
-        var client = $(this).filter(":selected").text()
-        getInterfaces();
+         getInterfaces()
          $('#aireplay-interface').show()
-         $('#aireplay-attack').show().on('click', function(){
-           var selectedinterface = $('#aireplay-interface-select').children("option").filter(":selected").text()
-           var selecteddelay =$('#aireplay-deauths-select').children("option").filter(":selected").text()
-           var selectedbssid = $('aireplay-bssid-select').children("option").filter(":selected").text()
-           var selectedclient = $('aireplay-client-select').children("option").filter(":selected").text()
-           console.log(selectedattack, selecteddelay, selectedbssid, selectedclient, selectedinterface)
-         })
+         $('#aireplay-attack').show()
          $('#aireplay').accordion("refresh")
       })
-      $('#aireplay-interface-select').change(function() {
-        var selectedinterface = $('#aireplay-interface-select').children("option").filter(":selected").text()
-        var selecteddelay =$('#aireplay-deauths-select').children("option").filter(":selected").text()
-        var selectedbssid = $('aireplay-bssid-select').children("option").filter(":selected").text()
-        var selectedclient = $('aireplay-client-select').children("option").filter(":selected").text()
-        //var selectedchannel = $('aireplay-bssid-select').children("option").filter(":selected").getAttribute("data-channel")
-         $('#aireplay-attack').show().on('click', function(){
-           console.log(selectedattack, selecteddelay, selectedbssid, selectedclient, selectedinterface)
-         })
-         $('#aireplay').accordion("refresh");
+      $('#aireplay-attack').on('click', function(){
+        var selectedinterface = $('#aireplay-interface-select').children("option").filter(":selected").val()
+        var selecteddeauths = $('#aireplay-deauths-select').children("option").filter(":selected").val()
+        var selectedbssid = $('#aireplay-bssid-select').children("option").filter(":selected").val()
+        var selectedclient = $('#aireplay-client-select').children("option").filter(":selected").text()
+        console.log('Issuing Get to http://localhost:2566/deauths/'+selecteddeauths+"/"+selectedbssid+"/"+selectedclient+"/"+selectedinterface)
+        $.getJSON("http://localhost:2566/deauth/"+selecteddeauths+"/"+selectedbssid+"/"+selectedclient+"/"+selectedinterface).done(function(response){
+          alert(response.text())
+        })
       })
     } else if (selectedattack == 1){ //FakeAuth
       hideThing();
@@ -121,14 +108,16 @@ function getInterfaces(){
       $('#aireplay-bssid-select').change(function() {
         var dselected = $(this).val();
          $('#aireplay-client').show()
+         $('#aireplay-interface').show()
+         $('#aireplay-attack').show()
          $('#aireplay').accordion("refresh")
       })
       $('#aireplay-client-select').change(function(){
-         $('#aireplay-interface').show()
+         //$('#aireplay-interface').show()
          $('#aireplay').accordion("refresh")
       })
       $('#aireplay-interface-select').change(function() {
-         $('#aireplay-attack').show().on('click', function(){
+         $('#aireplay-attack').on('click', function(){
            console.log("aireplay-ng -1 ")
          })
          $('#aireplay').accordion("refresh");
@@ -139,11 +128,11 @@ function getInterfaces(){
       $('#aireplay-interface').show();
       $('#aireplay').accordion("refresh")
       $('#aireplay-interface-select').change(function() {
-        var kismetinterface = $('#aireplay-interface-select').children("option").filter(":selected").text()
+        var selectedinterface = $('#aireplay-interface-select').children("option").filter(":selected").val()
          $('#aireplay-attack').show()
          $('.aireplay-attack-button').click(function(){
-           console.log("Issuing Get to http://localhost:2566/injectiontest/"+kismetinterface)
-           $.getJSON("http://localhost:2566/injectiontest/"+kismetinterface).done(function(response){
+           console.log("Issuing Get to http://localhost:2566/injectiontest/"+selectedinterface)
+           $.getJSON("http://localhost:2566/injectiontest/"+selectedinterface).done(function(response){
              alert(response.text())
            })
          })
