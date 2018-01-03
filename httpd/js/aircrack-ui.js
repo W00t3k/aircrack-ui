@@ -19,11 +19,12 @@
 kismet_ui_tabpane.AddTab({
 	id:    'aircrackui',
 	tabTitle:    'Aircrack-NG',
+  expandable: true,
 	createCallback: function(div) {
     $(document).ready(function(){
 $(div).append('<div id="aircrack-ui">');
 
-$( "#aircrack-ui" ).load( "/plugin/aircrack/main.html" );
+$( "#aircrack-ui" ).load( "/plugin/aircrack-ui/main.html" );
 
     });//Close document.ready
     },//End of div
